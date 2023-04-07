@@ -97,16 +97,4 @@ The Other way is to create a customized job by providing a script (**Jenkinsfile
       * Set the **branches to build** to \* / \*
 5.	As the **webhook** is already configured, it should work automatically when  after each commit. Commit any change to the repository. Then, check that the job is been executed and check its report.
 
-## Discussion:
-What do pipeline, node, agent, stage, and steps mean in the context of Jenkins?
-
-## Design:
-* Update the Binary Calculator project to the latest version you have implemented. Check that the jobs start running and check their report. 
-* Until now, the script in the Jenkins file contains only the continuous integration part. It’s required to update it to continuously deploy to GKE.
-
-
-## Deliverable
-* A report containing both the discussion and design parts.
-* Your Github link.
-* An audible video of about 3 minutes showing the continuous integration part (the two techniques).
-* An audible video of about 3 minutes showing the design part.
+test
