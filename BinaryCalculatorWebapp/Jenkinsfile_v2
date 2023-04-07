@@ -1,13 +1,13 @@
 pipeline {
   environment {
     //PROJECT = "REPLACE_WITH_YOUR_PROJECT_ID"
-	PROJECT = "green-tract-379622"
+	PROJECT = "first-jenkins-project"
     APP_NAME = "binary-calculator2"
 	//CLUSTER = "REPLACE_WITH_YOUR_CLUSTER_NAME"
     CLUSTER = "sofe3980u"
     CLUSTER_ZONE = "northamerica-northeast1-b"
     IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}"
-    JENKINS_CRED = "green-tract-379622"
+    JENKINS_CRED = "first-jenkins-project"
   }
   
 agent {
@@ -62,6 +62,19 @@ spec:
       steps {
         container('gcloud') {
           sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
+        }
+      }
+    }
+    stage ('Deploy') {
+      steps {
+        container('kubectl') {
+          withCredentials([googleServiceAccount(credentialsId: '118340630365516501889', projectId: 'first-jenkins-project')]) {
+            sh """
+	      gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+              /builder/kubectl apply -f ./BinaryCalculatorWebapp/bc-deploy.yaml --record
+              /builder/kubectl set image deployment/${APP_NAME} ${APP_NAME}=${IMAGE_TAG}:${BUILD_NUMBER} --record
+            """
+          }
         }
       }
     }
